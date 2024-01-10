@@ -61,5 +61,5 @@ for length in lengths:
         results[fold_id][4] = precision_score(y_test, y_result, average='weighted')
         results[fold_id][5] = recall_score(y_test, y_result, average='weighted')
 
-    df = pd.DataFrame(results)  # A is a numpy 2d array
+    df = pd.DataFrame(results)
     df.to_csv('results_' + length + '.csv', header=results_labels, index=False)

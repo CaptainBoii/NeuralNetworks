@@ -39,16 +39,9 @@ for length in lengths:
         X_test = np.array(X)[test_index]
         y_test = np.array(y)[test_index]
 
-        # Create an ImageDataGenerator for augmenting and preprocessing the images
         train_datagen = ImageDataGenerator(
-            rescale=1.0 / 255,
-            shear_range=0.2,
-            zoom_range=0.2,
-            horizontal_flip=True)
+            rescale=1.0 / 255)
 
-        optimizer = Adam(learning_rate=0.001)  # Adjust learning rate as needed
-
-        # Load and augment the training data
         train_generator = train_datagen.flow_from_dataframe(
             dataframe=pd.DataFrame({'X': X_train, 'y': y_train}),
             x_col='X',
@@ -57,7 +50,6 @@ for length in lengths:
             batch_size=128,
             class_mode='categorical')
 
-        # Create a CNN model
         model = Sequential([
             Conv2D(32, (3, 3), activation='relu', input_shape=(img_width, img_height, 3)),
             MaxPooling2D((2, 2)),
@@ -71,14 +63,11 @@ for length in lengths:
             Dense(6, activation='softmax')
         ])
 
-        # Compile the model
-        model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics='accuracy')
 
-        # Train the model
         model_history = model.fit(
             train_generator,
-            steps_per_epoch=train_generator.samples // 128,
-            epochs=100)
+            epochs=200)
 
         test_datagen = ImageDataGenerator(rescale=1.0 / 255)
         test_generator = test_datagen.flow_from_dataframe(
@@ -103,5 +92,5 @@ for length in lengths:
         results[fold_id][4] = precision_score(y_test, y_result, average='weighted', zero_division='warn')
         results[fold_id][5] = recall_score(y_test, y_result, average='weighted')
 
-    df = pd.DataFrame(results)  # A is a numpy 2d array
+    df = pd.DataFrame(results)
     df.to_csv('results_image_' + length + '.csv', header=results_labels, index=False)
