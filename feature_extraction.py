@@ -5,7 +5,7 @@ from librosa import feature
 import numpy as np
 
 lengths = ['5s', '15s']
-genres = ['Classical Music', 'Electronic', 'Hip-Hop', 'Metal', 'Pop', 'Rock']
+genres = ['Classical', 'Electronic', 'Hip-Hop', 'Metal', 'Pop', 'Rock']
 
 header = [
     'genre',
