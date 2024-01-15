@@ -94,4 +94,4 @@ for spec_type in types:
             results[fold_id][5] = recall_score(y_test, y_result, average='weighted')
 
         df = pd.DataFrame(results)
-        df.to_csv('results_image_' + (type[:-1]).lower() + '_' + length + '.csv', header=results_labels, index=False)
+        df.to_csv('results_image_' + (spec_type[:-1]).lower() + '_' + length + '.csv', header=results_labels, index=False)
